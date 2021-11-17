@@ -17,7 +17,7 @@ var questions = [
         choice2:"3",
         choice3:"4",
         choice4:"6",
-        answer: '4',
+        answer: 3,
     },
 
     {
@@ -26,7 +26,7 @@ var questions = [
         choice2:"Chiefs",
         choice3:"Bucs",
         choice4:"Packers",
-        answer: 'Rams',
+        answer: 1,
     },
     
     {
@@ -35,7 +35,7 @@ var questions = [
         choice2:"Pando",
         choice3:"La Paz",
         choice4:"Cochabamba",
-        answer: 'La Paz',
+        answer: 3,
     },
     {
         question:"How many islands are there in the Phillipines in 2021?",
@@ -43,7 +43,7 @@ var questions = [
         choice2:"7640",
         choice3:"2986",
         choice4:"6588",
-        answer: '7640',
+        answer: 2,
     },
     {
         question:"In 2021, how many total Marvel MCU movies have been made to date?",
@@ -51,7 +51,7 @@ var questions = [
         choice2:"22",
         choice3:"30",
         choice4:"26",
-        answer: '26',
+        answer: 4,
     }
 
 ]
@@ -70,7 +70,7 @@ startGame = () => {
 getNewquestion = () => {
     if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
         localStorage.setItem("mostRecentScore", score)
-        return window.location.assign("")
+        return window.location.assign("end.html")
 
     }
 
