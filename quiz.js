@@ -1,14 +1,14 @@
-var question = document.querySelector("#question");
-var choices = Array.from(document.querySelectorAll('.choice-text'));
-var progressText = document.querySelector('#progressText');
-var scoreText = document.querySelector('#score');
-
+const question = document.querySelector("#question");
+const choices = Array.from(document.querySelectorAll('.choice-text'));
+const progressText = document.querySelector('#progressText');
+const scoreText = document.querySelector('#score');
 
 var currentQuestion = {};
 var acceptingAnswers = true;
-var score = 0;
+var score = 0
 var questionCounter = 0;
-var availbleQuestion = [];
+var availableQuestions = [];
+
 var questions = [
     {
         question:"How many NBA championships does Lebron James Have?",
@@ -17,7 +17,8 @@ var questions = [
         choice3:"4",
         choice4:"6",
         answer:"4",
-    }
+    },
+
     {
         question:"Which team did NFL star Odel Beckham Jr. sign with?",
         choice1:"Rams",
@@ -25,7 +26,8 @@ var questions = [
         choice3:"Bucs",
         choice4:"Packers",
         answer:"Rams",
-    }
+    },
+    
     {
         question:"Whats the capital of Bolivia?",
         choice1:"Oruro",
@@ -33,7 +35,7 @@ var questions = [
         choice3:"La Paz",
         choice4:"Cochabamba",
         answer:"La Paz",
-    }
+    },
     {
         question:"How many islands are there in the Phillipines in 2021?",
         choice1:"350",
@@ -41,7 +43,7 @@ var questions = [
         choice3:"2986",
         choice4:"6588",
         answer:"7640",
-    }
+    },
     {
         question:"In 2021, how many total Marvel MCU movies have been made to date?",
         choice1:"18",
@@ -50,27 +52,74 @@ var questions = [
         choice4:"26",
         answer:"26",
     }
+
 ]
-var SCORE_POINTS = 100
-var MAX_QUESTIONS = 5
+const SCORE_POINTS = 100;
+const MAX_QUESTIONS = 5;
 
 
 startGame = () => {
     questionCounter = 0
     score = 0
-    availbleQuestions = [...questions]
+    availableQuestions = [...questions]
     getNewquestion()
 }
 
 getNewquestion = () => {
-    if(availQuestions.length === 0 || questionsCounter > MAX_QUESTIONS) {
+    if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
         localStorage.setItem("mostRecentScore", score)
-        return window.location.assign("/end.html")
+        return window.location.assign("")
 
     }
 
     questionCounter++
-    progressText.innerText = "Question ${questionCounter} of ${MAX_QUESTIONS}"
+    progressText.innerText = `Question ${questionCounter} of ${MAX_QUESTIONS}`
+
+    const questionsIndex = Math.floor(Math.random() * availableQuestions.length)
+    currentQuestion = availableQuestions[questionsIndex]
+    question.innerText = currentQuestion.question
+
+    choices.forEach(choice => {
+        const number = choice.dataset['number']
+        choice.innerText = currentQuestion['choice' + number]
+    })
+
+    availableQuestions.splice(questionsIndex, 1)
+
+    acceptingAnswers = true
 
 
 }
+
+choices.forEach(choice => {
+    choice.addEventListener('click', e => {
+        if(!acceptingAnswers) return
+
+        acceptingAnswers = false
+        const selectedChoice = e.target
+        const selectedAnswer = selectedChoice.dataset['number']
+
+        var classToApply = selectedAnswer == currentQuestion.answer ? 'correct' : 'incorrect'
+
+        if(classToApply === 'correct') {
+            incrementScore(SCORE_POINTS)
+        }
+
+        selectedChoice.parentElement.classList.add(classToApply)
+
+        setTimeout(() => {
+            selectedChoice.parentElement.classList.remove(classToApply)
+            getNewquestion()
+
+        }, 1000)
+        
+    })
+})
+
+incrementScore = num => {
+    score += num
+    scoreText.innerText = score
+}
+
+startGame()
+
